@@ -13,22 +13,15 @@ contract WhitehatTest is Test {
     IERC721 BAYC = IERC721(0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D);
     uint256[] apeTokenIds;
     address[] victims;
-    string MAINNET_RPC_URL = vm.envString("MAINNET_RPC_URL");
 
     function setUp() public {
-        mainnetFork = vm.createFork(MAINNET_RPC_URL);
-        vm.selectFork(mainnetFork);
-        vm.rollFork(18802260);
+        vm.createSelectFork(vm.rpcUrl('mainnet'), 18802260); // Create fork a block before actual exploit
 
         vm.prank(address(1));
         whitehat = new Whitehat();
-        vm.makePersistent(address(whitehat)); // https://book.getfoundry.sh/cheatcodes/make-persistent
     }
 
     function testWhitehat() public {
-        vm.selectFork(mainnetFork);
-        assertEq(vm.activeFork(), mainnetFork);
-
         apeTokenIds.push(6936);
         victims.push(0xf15C93562bc3944a68e938ef75D2A3360D98ca57);
 
