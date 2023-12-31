@@ -18,7 +18,7 @@ forge build
 ```
 
 ```shell
-forge test --fork-url <your_rpc_url>
+forge test -vv
 ```
 
 S/O to [0xQuit](https://twitter.com/0xQuit) for [inspiration](https://github.com/QuitCrypto/NFTTraderExploit)
