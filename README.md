@@ -2,7 +2,7 @@
 
 This will be a collection of PoCs in foundry from various hacks/exploits
 
-Each directory has info on the exploit
+Info on each exploit file is in writeups/
 
 Current PoCs:
-- [Flooring Protocol](https://github.com/0xn4de/Proof-of-Concepts/tree/main/flooring_protocol)
+- [Flooring Protocol](https://github.com/0xn4de/Proof-of-Concepts/tree/main/writeups/FLOORING.md)
