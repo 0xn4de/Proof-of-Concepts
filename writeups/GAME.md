@@ -7,13 +7,21 @@ _(copied from [Ancilia](https://twitter.com/AnciliaInc/status/175753410535975357
 
 There is a logic error in the newBidEtherMin() function allowing the bid user to submit only >5% of the last bid amount and bypass the check. Since then the full amount of the last bid amount will be returned back to the last bidAddress which could be any.
 The function  _sendEther will send back ETH to the last bidAddress. The problem is that the contract uses "call" to send the ETH which allows the re-entrancy attack.
-
+## Cause for Exploit 2
+The contract was meant to give out its ETH balance after the auction for its NFT had finished. Due to a missing check, the auction was going on at the same time as the main game. Because of this, once the auction ended, the ETH was claimable by claiming all 576 pixels.
 ## Fix
 None
 ## Exploit
+- GameReentrancy.sol
 - Create a contract to make a bid of 0.1 ETH on the contract
 - Then make a bid of 0.005 ETH (newBidEtherMin is 1/20 current bid)
 - 0.1 ETH gets sent to contract, use the receive function to create re-entrancy on the Game contract by making a constant bid for 0.005 ETH (bidEther on the contract stays the same, 0.1 ETH) until contract is empty
+
+## Exploit 2
+- GameClaim.sol
+- Contract checks the cost of 576 pixel claims
+- Contract buys the required PXL from Uniswap
+- Claims the 576 pixels, then calls claim() and gets all the ETH in the contract
 ## Testing
 Add an Ethereum RPC URL to .env
 ```shell
