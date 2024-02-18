@@ -9,6 +9,8 @@ There is a logic error in the newBidEtherMin() function allowing the bid user to
 The function  _sendEther will send back ETH to the last bidAddress. The problem is that the contract uses "call" to send the ETH which allows the re-entrancy attack.
 ## Cause for Exploit 2
 The contract was meant to give out its ETH balance after the auction for its NFT had finished. Due to a missing check, the auction was going on at the same time as the main game. Because of this, once the auction ended, the ETH was claimable by claiming all 576 pixels.
+## Cause for Exploit 3
+The contract sends back the ETH after each bid, which allows the receiver to have its fallback function called (in the case of a contract). An alternative could be a separate refund function that checks how much ETH to withdraw, instead of doing it in the same transaction as the bid tx
 ## Fix
 None
 ## Exploit
@@ -22,6 +24,10 @@ None
 - Contract checks the cost of 576 pixel claims
 - Contract buys the required PXL from Uniswap
 - Claims the 576 pixels, then calls claim() and gets all the ETH in the contract
+## Exploit 3
+- GameDoS.sol
+- Contract calls makeBid() with the minimum bid
+- Future bids all try to refund the bid ETH, but the fallback in GameDoS reverts
 ## Testing
 Add an Ethereum RPC URL to .env
 ```shell
